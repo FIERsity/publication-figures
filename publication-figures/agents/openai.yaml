@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publication Figures"
+  short_description: "Validated journal-style figures from research data."
+  default_prompt: "Use $publication-figures to render a validated manuscript figure from my data with Chinese Songti and Times New Roman typography."
