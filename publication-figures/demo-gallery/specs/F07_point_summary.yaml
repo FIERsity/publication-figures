@@ -1,0 +1,14 @@
+name: F07_chinese
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F07_chinese.csv
+plot:
+  kind: point_summary
+  x: 区域
+  y: 生态指数
+labels:
+  x: 区域
+  y: 生态质量指数
+language: zh
+dimensions_mm:
+  width: 88
+  height: 68
+legend: none

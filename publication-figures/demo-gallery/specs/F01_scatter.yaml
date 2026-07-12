@@ -1,0 +1,23 @@
+name: F01_scatter
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F01_scatter.csv
+plot:
+  kind: scatter
+  x: soil_carbon
+  y: respiration
+  fit: linear
+labels:
+  x:
+  - text: '土壤有机碳 '
+    role: chinese
+  - text: (g·kg$^{-1}$)
+    role: latin
+  y:
+  - text: '呼吸速率 '
+    role: chinese
+  - text: (μmol·m$^{-2}$·s$^{-1}$)
+    role: latin
+language: zh
+dimensions_mm:
+  width: 110
+  height: 72
+legend: none

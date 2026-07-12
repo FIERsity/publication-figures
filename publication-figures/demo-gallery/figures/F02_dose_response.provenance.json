@@ -1,0 +1,32 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F02_line.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F02_dose_response.csv",
+  "data_sha256": "cbc3bed08f41e4662544794ea7c7360c483faaa4d4a094fb180ec42908cdb736",
+  "rows_used": 14,
+  "plot": {
+    "kind": "line",
+    "x": "dose",
+    "y": "response",
+    "group": "treatment",
+    "display_labels": {
+      "group": {
+        "control": "Control",
+        "amended": "Amended"
+      }
+    }
+  },
+  "language": "zh",
+  "dimensions_mm": {
+    "width": 120,
+    "height": 72
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F02_dose_response.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F02_dose_response.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F02_dose_response.png"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F04_point_summary.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F04_point_summary.csv",
+  "data_sha256": "28697dc61bb20cd1e95d88b893f64ed577c37527ac609cf51b4b6fe8b0a8216c",
+  "rows_used": 108,
+  "plot": {
+    "kind": "point_summary",
+    "x": "split",
+    "y": "score",
+    "group": "method",
+    "display_labels": {
+      "x": {
+        "random": "随机",
+        "spatial": "空间",
+        "temporal": "时间"
+      },
+      "group": {
+        "baseline": "Baseline",
+        "method_a": "Method A",
+        "method_b": "Method B"
+      }
+    }
+  },
+  "language": "zh",
+  "dimensions_mm": {
+    "width": 140,
+    "height": 78
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F04_point_summary.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F04_point_summary.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F04_point_summary.png"
+  }
+}

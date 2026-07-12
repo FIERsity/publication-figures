@@ -1,0 +1,19 @@
+name: F06_violin
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F06_violin.csv
+plot:
+  kind: violin
+  x: stage
+  y: expression
+  display_labels:
+    x:
+      early: Early
+      middle: Middle
+      late: Late
+labels:
+  x: Stage
+  y: Relative expression
+language: en
+dimensions_mm:
+  width: 110
+  height: 72
+legend: none

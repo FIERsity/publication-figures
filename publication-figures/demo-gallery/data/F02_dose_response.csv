@@ -1,0 +1,15 @@
+dose,response,treatment
+0,0.1634,control
+1,0.2069,control
+2,0.2906,control
+5,0.4374,control
+10,0.5877,control
+20,0.6565,control
+40,0.808,control
+0,0.2075,amended
+1,0.3114,amended
+2,0.4161,amended
+5,0.5424,amended
+10,0.6735,amended
+20,0.812,amended
+40,0.911,amended

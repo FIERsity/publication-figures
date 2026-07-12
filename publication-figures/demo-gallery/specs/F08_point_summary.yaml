@@ -1,0 +1,25 @@
+name: F08_stress
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F08_stress.csv
+plot:
+  kind: point_summary
+  x: dataset
+  y: accuracy
+  group: model
+  display_labels:
+    x:
+      internal: Internal
+      external: External
+    group:
+      linear_model: Linear
+      random_forest: Random forest
+      gradient_boost: Gradient boost
+      neural_network: Neural network
+      ensemble: Ensemble
+labels:
+  x: Evaluation set
+  y: Balanced accuracy
+language: en
+dimensions_mm:
+  width: 165
+  height: 82
+legend: auto

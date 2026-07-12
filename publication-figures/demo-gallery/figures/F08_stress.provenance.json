@@ -1,0 +1,39 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F08_point_summary.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F08_stress.csv",
+  "data_sha256": "8359c09486c137906745fd2abefebd5f24ef4fafa31bb46530f778da24f15bb5",
+  "rows_used": 90,
+  "plot": {
+    "kind": "point_summary",
+    "x": "dataset",
+    "y": "accuracy",
+    "group": "model",
+    "display_labels": {
+      "x": {
+        "internal": "Internal",
+        "external": "External"
+      },
+      "group": {
+        "linear_model": "Linear",
+        "random_forest": "Random forest",
+        "gradient_boost": "Gradient boost",
+        "neural_network": "Neural network",
+        "ensemble": "Ensemble"
+      }
+    }
+  },
+  "language": "en",
+  "dimensions_mm": {
+    "width": 165,
+    "height": 82
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F08_stress.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F08_stress.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F08_stress.png"
+  }
+}

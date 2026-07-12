@@ -1,0 +1,24 @@
+name: F04_point_summary
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F04_point_summary.csv
+plot:
+  kind: point_summary
+  x: split
+  y: score
+  group: method
+  display_labels:
+    x:
+      random: 随机
+      spatial: 空间
+      temporal: 时间
+    group:
+      baseline: Baseline
+      method_a: Method A
+      method_b: Method B
+labels:
+  x: 验证方案
+  y: R²
+language: zh
+dimensions_mm:
+  width: 140
+  height: 78
+legend: auto

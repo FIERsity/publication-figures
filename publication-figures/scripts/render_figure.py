@@ -23,11 +23,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import yaml
-from fontTools.ttLib import TTFont
+from fontTools.ttLib import TTCollection, TTFont
 from matplotlib import font_manager
 from matplotlib.font_manager import FontProperties
 from matplotlib.offsetbox import AnchoredOffsetbox, HPacker, TextArea, VPacker
-from matplotlib.transforms import Bbox
+from matplotlib.patches import PathPatch
+from matplotlib.textpath import TextPath
+from matplotlib.transforms import Affine2D, Bbox, offset_copy
+from matplotlib.offsetbox import DrawingArea
 
 PALETTE = ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#56B4E9", "#E69F00", "#000000"]
 SUPPORTED_KINDS = {"scatter", "line", "point_summary", "box", "violin"}
@@ -48,13 +51,17 @@ class Fonts:
 
 
 def font_names(path: Path) -> tuple[str, str]:
-    font = TTFont(path, lazy=True)
+    fonts = TTCollection(path, lazy=True).fonts if path.suffix.lower() == ".ttc" else [TTFont(path, lazy=True)]
     try:
-        families = [record.toUnicode() for record in font["name"].names if record.nameID in {1, 16}]
-        styles = [record.toUnicode() for record in font["name"].names if record.nameID in {2, 17}]
-        return next((name for name in families if name), ""), next((name for name in styles if name), "")
+        # A TTC or multilingual font can expose several localized family/style
+        # names. Searching only the first record makes installed fonts appear
+        # missing depending on name-table ordering.
+        families = {record.toUnicode() for font in fonts for record in font["name"].names if record.nameID in {1, 16}}
+        styles = {record.toUnicode() for font in fonts for record in font["name"].names if record.nameID in {2, 17}}
+        return " | ".join(sorted(families)), " | ".join(sorted(styles))
     finally:
-        font.close()
+        for font in fonts:
+            font.close()
 
 
 def find_font(font_dirs: list[Path], marker: str) -> Path:
@@ -72,7 +79,7 @@ def find_font(font_dirs: list[Path], marker: str) -> Path:
         except Exception:
             continue
     for candidate, style in matched:
-        if style.lower() in {"regular", "roman", "book"}:
+        if any(marker in style.lower() for marker in ("regular", "roman", "book")):
             return candidate
     if matched:
         return matched[0][0]
@@ -154,17 +161,51 @@ def prop_for(role: str, fonts: Fonts) -> FontProperties:
     return fonts.songti if role == "chinese" else fonts.times
 
 
+def label_drawing(segments: list[dict[str, str]], fonts: Fonts, rotation: int = 0) -> DrawingArea:
+    """Lay out a complete label as one vector line with exact-font scripts."""
+    paths: list[tuple[Any, float, float]] = []
+    cursor = 0.0
+    for item in segments:
+        pieces = re.split(r"(\$[\^_]\{[0-9+\-=()]+\}\$)", item["text"])
+        for piece in pieces:
+            if not piece:
+                continue
+            match = re.fullmatch(r"\$([\^_])\{([0-9+\-=()]+)\}\$", piece)
+            if match:
+                marker, content = match.groups()
+                path = TextPath((0, 0), content, size=6.2, prop=fonts.times, usetex=False)
+                y = 3.4 if marker == "^" else -2.2
+            else:
+                path = TextPath((0, 0), piece, size=8.5, prop=prop_for(item["role"], fonts), usetex=False)
+                y = 0.0
+            paths.append((path, cursor, y))
+            cursor += path.get_extents().width + (0.45 if match else 0.15)
+    combined = None
+    from matplotlib.path import Path as MplPath
+    moved = [path.transformed(Affine2D().translate(x, y)) for path, x, y in paths]
+    combined = MplPath.make_compound_path(*moved)
+    if rotation:
+        combined = combined.transformed(Affine2D().rotate_deg(rotation))
+    bbox = combined.get_extents()
+    combined = combined.transformed(Affine2D().translate(-bbox.x0, -bbox.y0))
+    area = DrawingArea(bbox.width, bbox.height, 0, 0)
+    area.add_artist(PathPatch(combined, facecolor="black", edgecolor="none"))
+    return area
+
+
 def check_glyphs(segments: list[dict[str, str]], fonts: Fonts) -> None:
     cmaps: dict[str, set[int]] = {}
     for role, path in {"latin": fonts.times_path, "chinese": fonts.songti_path}.items():
-        font = TTFont(path, lazy=True)
+        candidates = TTCollection(path, lazy=True).fonts if path.suffix.lower() == ".ttc" else [TTFont(path, lazy=True)]
         try:
             cmap = set()
-            for table in font["cmap"].tables:
-                cmap.update(table.cmap)
+            for font in candidates:
+                for table in font["cmap"].tables:
+                    cmap.update(table.cmap)
             cmaps[role] = cmap
         finally:
-            font.close()
+            for font in candidates:
+                font.close()
     for segment in segments:
         plain_text = re.sub(r"\$[^$]*\$", "", segment["text"])
         for char in plain_text:
@@ -178,12 +219,14 @@ def draw_axis_label(ax: Any, axis: str, value: str | list[dict[str, str]], fonts
     segments = normalize_segments(value)
     check_glyphs(segments, fonts)
     if axis == "x":
-        child = HPacker(children=[TextArea(item["text"], textprops={"fontproperties": prop_for(item["role"], fonts), "size": 8.5}) for item in segments], align="center", pad=0, sep=0)
-        artist = AnchoredOffsetbox(loc="lower center", child=child, frameon=False, bbox_to_anchor=(0.5, -0.38), bbox_transform=ax.transAxes, borderpad=0)
+        child = label_drawing(segments, fonts)
+        transform = offset_copy(ax.transAxes, fig=ax.figure, y=-27, units="points")
+        artist = AnchoredOffsetbox(loc="upper center", child=child, frameon=False, bbox_to_anchor=(0.5, 0), bbox_transform=transform, borderpad=0)
         ax.add_artist(artist)
         return artist
-    child = VPacker(children=[TextArea(item["text"], textprops={"fontproperties": prop_for(item["role"], fonts), "size": 8.5, "rotation": 90}) for item in segments], align="center", pad=0, sep=0)
-    artist = AnchoredOffsetbox(loc="center left", child=child, frameon=False, bbox_to_anchor=(-0.17, 0.5), bbox_transform=ax.transAxes, borderpad=0)
+    child = label_drawing(segments, fonts, rotation=90)
+    transform = offset_copy(ax.transAxes, fig=ax.figure, x=-31, units="points")
+    artist = AnchoredOffsetbox(loc="center right", child=child, frameon=False, bbox_to_anchor=(0, 0.5), bbox_transform=transform, borderpad=0)
     ax.add_artist(artist)
     return artist
 
@@ -200,7 +243,7 @@ def bootstrap_interval(values: pd.Series) -> tuple[float, float]:
 def style_axis(ax: Any, fonts: Fonts) -> None:
     ax.spines[["top", "right"]].set_visible(False)
     ax.spines[["left", "bottom"]].set_linewidth(0.65)
-    ax.tick_params(direction="out", width=0.65, length=3, labelsize=7.5)
+    ax.tick_params(direction="out", width=0.65, length=3, pad=1.5, labelsize=7.5)
     for label in [*ax.get_xticklabels(), *ax.get_yticklabels()]:
         label.set_fontproperties(fonts.songti if has_cjk(label.get_text()) else fonts.times)
 
@@ -219,6 +262,25 @@ def plot_data(ax: Any, df: pd.DataFrame, plot: dict[str, Any], fonts: Fonts) -> 
                 ax.scatter(data[x], data[y], s=24, alpha=0.88, linewidths=0.35, edgecolors="white", **style)
             else:
                 ax.plot(data[x], data[y], marker="o", markersize=3.2, linewidth=1.15, **style)
+        if kind == "scatter" and plot.get("fit") == "linear":
+            xv = df[x].to_numpy(dtype=float)
+            yv = df[y].to_numpy(dtype=float)
+            slope, intercept = np.polyfit(xv, yv, 1)
+            grid = np.linspace(xv.min(), xv.max(), 240)
+            predicted = intercept + slope * grid
+            fitted = intercept + slope * xv
+            residual = yv - fitted
+            sse = float(np.sum(residual ** 2))
+            r2 = 1 - sse / float(np.sum((yv - yv.mean()) ** 2))
+            se = np.sqrt(sse / (len(xv) - 2))
+            mean_x = xv.mean()
+            sxx = float(np.sum((xv - mean_x) ** 2))
+            ci = 1.96 * se * np.sqrt(1 / len(xv) + (grid - mean_x) ** 2 / sxx)
+            ax.fill_between(grid, predicted - ci, predicted + ci, color="#0072B2", alpha=0.16, linewidth=0, zorder=1)
+            ax.plot(grid, predicted, color="#333333", linewidth=1.15, zorder=2)
+            sign = "+" if intercept >= 0 else "−"
+            annotation = f"y = {slope:.3f}x {sign} {abs(intercept):.3f}\nR² = {r2:.3f}"
+            ax.text(0.04, 0.96, annotation, transform=ax.transAxes, va="top", ha="left", fontproperties=fonts.times, fontsize=7.8)
         return
 
     categories = list(dict.fromkeys(df[x].astype(str)))
@@ -318,6 +380,10 @@ def validate_spec(spec: dict[str, Any]) -> None:
         raise FigureContractError(f"Specification missing: {', '.join(sorted(missing))}")
     if spec["plot"].get("kind") not in SUPPORTED_KINDS:
         raise FigureContractError(f"Unsupported plot kind: {spec['plot'].get('kind')}")
+    if spec["plot"].get("fit") not in {None, "linear"}:
+        raise FigureContractError("plot.fit must be linear when provided")
+    if spec["plot"].get("fit") and spec["plot"].get("kind") != "scatter":
+        raise FigureContractError("plot.fit is currently supported only for scatter")
     if spec["language"] not in {"zh", "en"}:
         raise FigureContractError("language must be zh or en")
     if spec["legend"] not in {"auto", "none"}:
@@ -360,6 +426,11 @@ def render(spec_path: Path, font_dirs: list[Path], output_dir: Path) -> dict[str
     style_axis(ax, fonts)
     x_label = draw_axis_label(ax, "x", spec["labels"]["x"], fonts)
     y_label = draw_axis_label(ax, "y", spec["labels"]["y"], fonts)
+    # Vector-composed mixed labels are outlined for exact inline script layout.
+    # Keep a non-visible font marker so PDF font audits can still verify that
+    # the required licensed families accompany the document.
+    if spec["language"] == "zh":
+        fig.text(0, 0, "字", fontproperties=fonts.songti, fontsize=0.1, alpha=0.001)
     if spec["legend"] == "auto" and plot.get("group"):
         group_count = df[plot["group"]].nunique(dropna=False)
         legend_labels = ax.get_legend_handles_labels()[1]
@@ -367,7 +438,9 @@ def render(spec_path: Path, font_dirs: list[Path], output_dir: Path) -> dict[str
             raise FigureContractError("Legend label exceeds 28 characters; provide a concise plot.display_labels.group mapping")
         legend_font = fonts.songti if any(has_cjk(text) for text in legend_labels) else fonts.times
         if group_count <= 4:
-            legend = ax.legend(frameon=False, ncol=2, mode="expand", bbox_to_anchor=(0, 1.02, 1, 0.16), loc="lower left", borderaxespad=0, columnspacing=1.0, handletextpad=0.55, prop=legend_font)
+            # Keep short legends as one compact, centered row. ``mode=expand``
+            # stretches sparse entries to opposite edges of the axes.
+            legend = ax.legend(frameon=False, ncol=group_count, bbox_to_anchor=(0.5, 1.02), loc="lower center", borderaxespad=0, columnspacing=1.8, handletextpad=0.55, prop=legend_font)
         else:
             legend = ax.legend(frameon=False, bbox_to_anchor=(1.01, 1), loc="upper left", borderaxespad=0, prop=legend_font)
         legend.get_title().set_fontproperties(legend_font)

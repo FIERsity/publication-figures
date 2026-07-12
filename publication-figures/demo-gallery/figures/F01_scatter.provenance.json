@@ -1,0 +1,26 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F01_scatter.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F01_scatter.csv",
+  "data_sha256": "d42f8a7a260685350eac885c7758ed3abaeaca79efd7a67da4c01e60610f8232",
+  "rows_used": 74,
+  "plot": {
+    "kind": "scatter",
+    "x": "soil_carbon",
+    "y": "respiration",
+    "fit": "linear"
+  },
+  "language": "zh",
+  "dimensions_mm": {
+    "width": 110,
+    "height": 72
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F01_scatter.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F01_scatter.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F01_scatter.png"
+  }
+}

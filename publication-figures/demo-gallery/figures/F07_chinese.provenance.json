@@ -1,0 +1,25 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F07_point_summary.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F07_chinese.csv",
+  "data_sha256": "3608a6f66076782f201e271703d655299f457e018c13b50d03398b866c2b08f6",
+  "rows_used": 71,
+  "plot": {
+    "kind": "point_summary",
+    "x": "区域",
+    "y": "生态指数"
+  },
+  "language": "zh",
+  "dimensions_mm": {
+    "width": 88,
+    "height": 68
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F07_chinese.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F07_chinese.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F07_chinese.png"
+  }
+}
