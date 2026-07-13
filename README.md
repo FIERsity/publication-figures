@@ -1,28 +1,31 @@
 # Publication Figures
 
-A compact workspace for producing reproducible, publication-ready research figures.
+A reproducible renderer for journal-style quantitative figures from CSV, TSV, Excel, and Parquet data.
 
-## Purpose
+It supports scatter, line, point-summary, box, and violin plots; Chinese Songti and English Times New Roman typography; compact external legends; exact inline superscripts; optional linear fits with 95% confidence bands; and validated PDF, outlined SVG, and 600 dpi PNG exports. Every successful render also records QA and data provenance.
 
-This repository keeps figure-generation assets separate from data collection and analysis projects. Each figure should be traceable to a script or notebook, use explicit input and output paths, and remain reproducible without project-specific hidden state.
+The repository includes an eight-case synthetic-data [review gallery](publication-figures/demo-gallery/index.html) for visual regression and feedback. Rebuild it with:
 
-## Suggested structure
-
-```text
-data/       # Small, shareable inputs or documented placeholders
-scripts/    # Figure-generation code
-figures/    # Exported publication assets
-styles/     # Shared themes, fonts, and palettes
+```bash
+cd publication-figures
+../.venv/bin/python scripts/build_demo_gallery.py
 ```
 
-Store large or restricted datasets outside the repository and document how they are obtained. Prefer vector output (`PDF` or `SVG`) for line art and high-resolution `PNG` for raster graphics.
+See [DEMO_WORKFLOW.md](publication-figures/DEMO_WORKFLOW.md) for the feedback workflow and [SKILL.md](publication-figures/SKILL.md) for the rendering contract.
 
 ---
 
 ## 中文
 
-用于生成可复现、可发表科研图件的轻量仓库。
+这是一个从 CSV、TSV、Excel 和 Parquet 数据生成可复现论文图的绘图工具。
 
-本仓库将制图资产与数据采集、实证分析项目分离。每张图应对应明确的脚本或 Notebook，输入输出路径清晰，且不依赖未说明的本地状态。
+目前支持散点图、折线图、原始点与置信区间汇总图、箱线图和小提琴图；统一使用中文宋体与英文 Times New Roman，支持紧凑外置图例、规范上下标、线性回归及 95% 置信带，并输出经过检查的 PDF、轮廓化 SVG、600 dpi PNG、QA 报告和数据溯源记录。
 
-建议使用 `data/`、`scripts/`、`figures/` 和 `styles/` 分别管理输入、代码、导出图件与样式。大型或受限数据应存放在仓库外，并说明获取方式；线图优先导出 `PDF` 或 `SVG`，栅格图使用高分辨率 `PNG`。
+仓库附带一个包含 8 类合成数据的[反馈画廊](publication-figures/demo-gallery/index.html)，用于浏览、反馈和回归检查。运行以下命令即可完整重建：
+
+```bash
+cd publication-figures
+../.venv/bin/python scripts/build_demo_gallery.py
+```
+
+反馈流程参见 [DEMO_WORKFLOW.md](publication-figures/DEMO_WORKFLOW.md)，绘图规范参见 [SKILL.md](publication-figures/SKILL.md)。
