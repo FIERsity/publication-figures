@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "checks": [
+    "legend_frameless",
+    "no_clipped_axis_text",
+    "no_label_text_collisions",
+    "legend_outside_axes",
+    "pdf_fonts_embedded"
+  ],
+  "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nGQXWAK+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     25  0\n"
+}

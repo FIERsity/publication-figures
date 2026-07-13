@@ -1,0 +1,19 @@
+name: F05_box
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F05_box.csv
+plot:
+  kind: box
+  x: habitat
+  y: biomass
+  display_labels:
+    x:
+      forest: Forest
+      grassland: Grassland
+      wetland: Wetland
+labels:
+  x: Habitat
+  y: Biomass (g m$^{-2}$)
+language: en
+dimensions_mm:
+  width: 110
+  height: 72
+legend: none

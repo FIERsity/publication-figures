@@ -1,0 +1,26 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F03_line.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F03_time_series.csv",
+  "data_sha256": "d4849216ea7538e14a8c81c9c84d337c9ce8f245e42595b3e9303dd8555efdf5",
+  "rows_used": 24,
+  "plot": {
+    "kind": "line",
+    "x": "day",
+    "y": "chlorophyll",
+    "group": "region"
+  },
+  "language": "zh",
+  "dimensions_mm": {
+    "width": 135,
+    "height": 72
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F03_time_series.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F03_time_series.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F03_time_series.png"
+  }
+}

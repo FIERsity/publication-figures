@@ -1,0 +1,23 @@
+name: F02_dose_response
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F02_dose_response.csv
+plot:
+  kind: line
+  x: dose
+  y: response
+  group: treatment
+  display_labels:
+    group:
+      control: Control
+      amended: Amended
+labels:
+  x:
+  - text: '浓度 '
+    role: chinese
+  - text: (μM)
+    role: latin
+  y: Response (fraction)
+language: zh
+dimensions_mm:
+  width: 120
+  height: 72
+legend: auto

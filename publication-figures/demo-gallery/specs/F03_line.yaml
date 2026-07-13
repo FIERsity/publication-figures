@@ -1,0 +1,19 @@
+name: F03_time_series
+data: /Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F03_time_series.csv
+plot:
+  kind: line
+  x: day
+  y: chlorophyll
+  group: region
+labels:
+  x: 观测日
+  y:
+  - text: '叶绿素 a '
+    role: chinese
+  - text: (μg L$^{-1}$)
+    role: latin
+language: zh
+dimensions_mm:
+  width: 135
+  height: 72
+legend: auto

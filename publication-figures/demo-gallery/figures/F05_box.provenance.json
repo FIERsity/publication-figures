@@ -1,0 +1,32 @@
+{
+  "spec": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/specs/F05_box.yaml",
+  "data": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/data/F05_box.csv",
+  "data_sha256": "e4d4b6f66c10843bfc5910966aff7c8978bf606560a1516b6bb4ef660fad982f",
+  "rows_used": 102,
+  "plot": {
+    "kind": "box",
+    "x": "habitat",
+    "y": "biomass",
+    "display_labels": {
+      "x": {
+        "forest": "Forest",
+        "grassland": "Grassland",
+        "wetland": "Wetland"
+      }
+    }
+  },
+  "language": "en",
+  "dimensions_mm": {
+    "width": 110,
+    "height": 72
+  },
+  "fonts": {
+    "times_new_roman": "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+    "songti": "/System/Library/Fonts/Supplemental/Songti.ttc"
+  },
+  "outputs": {
+    "pdf": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F05_box.pdf",
+    "svg": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F05_box.svg",
+    "png": "/Volumes/DataHub/Dev/publication-figures/publication-figures/demo-gallery/figures/F05_box.png"
+  }
+}
